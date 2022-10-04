@@ -11,7 +11,7 @@ const config = {
       gravity: { y: 0 }
     }
   },
-  scene: [MainGame]
+  scene: [MainGame],
 };
 
 export default config;

@@ -24,6 +24,13 @@ export default class MainGame {
       this.cursors = this.input.keyboard.createCursorKeys()
     }
 
+    if (!this.keys) {
+      this.keys = this.input.keyboard.addKeys({
+        'lateralLeft': 188,
+        'lateralRight': 190,
+      })
+    }
+
     const controlConfig = {
       camera: this.cameras.main,
       left: this.cursors.left,
@@ -33,7 +40,7 @@ export default class MainGame {
       zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
       zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
       acceleration: 0.06,
-      drag: 0.0005,
+      // drag: 0.0005,
       maxSpeed: 1.0
     };
 
@@ -58,15 +65,43 @@ export default class MainGame {
     else {
       this.ship.setAcceleration(0);
     }
+
+    if (this.keys.lateralLeft.isDown) {
+      const newRads = this.addDegreesToRads(this.ship.rotation, -90);
+      this.physics.velocityFromRotation(newRads, 600, this.ship.body.acceleration);
+    } else if (this.keys.lateralRight.isDown) {
+      const newRads = this.addDegreesToRads(this.ship.rotation, 90);
+      this.physics.velocityFromRotation(newRads, 600, this.ship.body.acceleration);
+    }
+  }
+
+  addDegreesToRads(rads, degrees) {
+    const rotationDegrees = this.radsToDegrees(rads);
+    const newDegrees = this.addDegrees(rotationDegrees, degrees);
+    return this.degreesToRads(newDegrees);
+  }
+
+  addDegrees(currentAngle, difference) {
+    if (currentAngle + difference >= 360) return currentAngle + difference - 360;
+    if (currentAngle + difference <= 0) return currentAngle + difference + 360;
+    return currentAngle + difference;
+  }
+
+  radsToDegrees(rads) {
+    return rads * 180 / Math.PI;
+  }
+
+  degreesToRads(degrees) {
+    return (degrees * Math.PI) / 180;
   }
 
   initShip() {
     if (!this.ship) {
       this.ship = this.physics.add.image(400, 100, 'logo');
-      this.ship.setCollideWorldBounds(true);
+      this.ship.setCollideWorldBounds(false);
       const particles = this.add.particles('red');
       const emitter = particles.createEmitter({
-        speed: 100,
+        speed: 10,
         scale: { start: 1, end: 0 },
         blendMode: 'ADD'
       });
