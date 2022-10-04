@@ -1,7 +1,7 @@
 
-export default function controls() {
+import cursors from './cursors.js';
 
-  const cursors = this.input.keyboard.createCursorKeys();
+export default function controls() {
 
   this.cameras.main.startFollow(logo);
   const controlConfig = {
