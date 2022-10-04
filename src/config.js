@@ -1,7 +1,7 @@
 
 import MainGame from './Game.js';
 
-const config = ({ preload, create, update }) => ({
+const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
@@ -12,6 +12,6 @@ const config = ({ preload, create, update }) => ({
     }
   },
   scene: [MainGame]
-});
+};
 
 export default config;

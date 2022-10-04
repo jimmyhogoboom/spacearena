@@ -44,6 +44,19 @@ export default class MainGame {
   update() {
     if (this.cursors.left.isDown) {
       this.ship.setAngularVelocity(-150);
+    } else if (this.cursors.right.isDown) {
+      this.ship.setAngularVelocity(150);
+    } else {
+      this.ship.setAngularVelocity(0);
+    }
+
+    if (this.cursors.up.isDown) {
+      this.physics.velocityFromRotation(this.ship.rotation, 600, this.ship.body.acceleration);
+    } else if (this.cursors.down.isDown) {
+      this.physics.velocityFromRotation(this.ship.rotation, -600, this.ship.body.acceleration);
+    }
+    else {
+      this.ship.setAcceleration(0);
     }
   }
 
