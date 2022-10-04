@@ -1,4 +1,6 @@
 
+import MainGame from './Game.js';
+
 const config = ({ preload, create, update }) => ({
   type: Phaser.AUTO,
   width: 800,
@@ -9,11 +11,7 @@ const config = ({ preload, create, update }) => ({
       gravity: { y: 0 }
     }
   },
-  scene: {
-    preload: preload,
-    create: create,
-    update: update
-  }
+  scene: [MainGame]
 });
 
 export default config;
