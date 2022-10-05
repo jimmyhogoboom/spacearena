@@ -54,8 +54,8 @@ export default class MainGame {
     this.explosion = this.add.sprite(506, 46, 'explosion');
     this.explosion.setPosition(-100, -100);
 
-    this.initShip();
-    this.initShip();
+    this.initShip(window.innerWidth * .8, window.innerHeight / 2);
+    this.initShip(window.innerWidth * .2, window.innerHeight / 2, 180);
 
     if (!this.keys) {
       this.keys = this.input.keyboard.addKeys({
@@ -249,13 +249,17 @@ export default class MainGame {
     return (degrees * Math.PI) / 180;
   }
 
-  initShip() {
+  initShip(x, y, angle) {
     if (this.ships.length < 2) {
       const newShip = this.physics.add.image(48, 48, `ship0${this.ships.length + 1}`).setDepth(2);
       newShip.data = { health: 100 };
       newShip.setCollideWorldBounds(true);
       newShip.setMaxVelocity(MAXIMUM_VELOCITY);
       this.physics.add.collider(newShip, this.bullets, this.hit, null, this);
+      newShip.setPosition(x, y);
+      if (angle) {
+        newShip.setAngle(angle);
+      }
       this.ships.push(newShip);
     }
   }
