@@ -7,6 +7,7 @@ const KEY_LESS_THAN = 188;
 const MAXIMUM_VELOCITY = 600;
 const PRIMARY_ACCELERATION = 600;
 const SECONDARY_ACCELERATION = 300;
+const ANGULAR_VELOCITY = 200;
 const BULLET_DAMAGE = 10;
 const FIRE_DELAY = 200;
 
@@ -93,14 +94,14 @@ export default class MainGame {
     });
 
     if (this.keys.left.isDown) {
-      this.ships[0].setAngularVelocity(-150);
+      this.ships[0].setAngularVelocity(-ANGULAR_VELOCITY);
     } else if (this.keys.right.isDown) {
-      this.ships[0].setAngularVelocity(150);
+      this.ships[0].setAngularVelocity(ANGULAR_VELOCITY);
     } else {
       this.ships[0].setAngularVelocity(0);
     }
 
-    // TODO: only play emitter when thrust is active
+    // TODO: show thrust sprite on correct side when thrust is active
     // TODO: combine inputs. Currently, whichever key is handled last is the only input considered.
 
     if (this.keys.up.isDown) {
@@ -164,9 +165,9 @@ export default class MainGame {
 
     ////// Player 2 //////
     if (this.keys.p2Left.isDown) {
-      this.ships[1].setAngularVelocity(-150);
+      this.ships[1].setAngularVelocity(-ANGULAR_VELOCITY);
     } else if (this.keys.p2Right.isDown) {
-      this.ships[1].setAngularVelocity(150);
+      this.ships[1].setAngularVelocity(ANGULAR_VELOCITY);
     } else {
       this.ships[1].setAngularVelocity(0);
     }
