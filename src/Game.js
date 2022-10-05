@@ -6,7 +6,7 @@ const KEY_GREATER_THAN = 190;
 const KEY_LESS_THAN = 188;
 const MAXIMUM_VELOCITY = 600;
 const PRIMARY_ACCELERATION = 600;
-const SECONDARY_ACCELERATION = 400;
+const SECONDARY_ACCELERATION = 300;
 const BULLET_DAMAGE = 10;
 
 export default class MainGame {
@@ -22,6 +22,10 @@ export default class MainGame {
     this.load.image('ship02', 'assets/orange.png');
     this.load.image('sky', 'assets/nebula.jpg');
     this.load.image('projectile', 'assets/projectile-red.png');
+    this.load.spritesheet(
+      'explosion',
+      'assets/explosion_46x46.png',
+      { frameWidth: 46, frameHeight: 46 });
 
     // this.load.setBaseURL('http://labs.phaser.io');
     // TODO: bring these into assets directory
@@ -40,6 +44,13 @@ export default class MainGame {
       maxSize: 30,
       runChildUpdate: true
     });
+    this.anims.create({
+      key: 'explode',
+      frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 10 }),
+      frameRate: 10,
+      hideOnComplete: true,
+    });
+    this.explosion = this.add.sprite(506, 46, 'explosion');
 
     this.initShip();
     this.initShip();
@@ -88,6 +99,9 @@ export default class MainGame {
       if (ship.data.health < 1) {
         ship.setActive(false);
         ship.setVisible(false);
+        this.explosion.setScale(2);
+        this.explosion.setPosition(ship.x, ship.y);
+        this.explosion.play('explode', true);
       }
     });
 
