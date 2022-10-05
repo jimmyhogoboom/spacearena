@@ -11,7 +11,7 @@ const Bullet = new Phaser.Class({
       this.setBlendMode(1);
       this.setDepth(1);
 
-      this.speed = 500;
+      this.speed = 800;
       this.lifespan = 1000;
 
       this._temp = new Phaser.Math.Vector2();
