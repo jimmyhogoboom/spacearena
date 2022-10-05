@@ -1,5 +1,10 @@
 
 const BRAKE_VELOCITY_DELTA = 15;
+const KEY_GREATER_THAN = 190;
+const KEY_LESS_THAN = 188;
+const MAXIMUM_VELOCITY = 600;
+const PRIMARY_ACCELERATION = 600;
+const SECONDARY_ACCELERATION = 400;
 
 export default class MainGame {
   constructor() {
@@ -30,8 +35,8 @@ export default class MainGame {
 
     if (!this.keys) {
       this.keys = this.input.keyboard.addKeys({
-        'lateralLeft': 188,
-        'lateralRight': 190,
+        'lateralLeft': KEY_LESS_THAN,
+        'lateralRight': KEY_GREATER_THAN,
         'spaceBrake': Phaser.Input.Keyboard.KeyCodes.M,
         'p2Up': Phaser.Input.Keyboard.KeyCodes.W,
         'p2Down': Phaser.Input.Keyboard.KeyCodes.S,
@@ -72,9 +77,9 @@ export default class MainGame {
 
     if (this.cursors.up.isDown) {
       this.emitter.startFollow(this.ships[0]);
-      this.physics.velocityFromRotation(this.ships[0].rotation, 600, this.ships[0].body.acceleration);
+      this.physics.velocityFromRotation(this.ships[0].rotation, PRIMARY_ACCELERATION, this.ships[0].body.acceleration);
     } else if (this.cursors.down.isDown) {
-      this.physics.velocityFromRotation(this.ships[0].rotation, -400, this.ships[0].body.acceleration);
+      this.physics.velocityFromRotation(this.ships[0].rotation, -SECONDARY_ACCELERATION, this.ships[0].body.acceleration);
     }
     else {
       this.emitter.stopFollow(this.ships[0]);
@@ -83,10 +88,10 @@ export default class MainGame {
 
     if (this.keys.lateralLeft.isDown) {
       const newRads = this.addDegreesToRads(this.ships[0].rotation, -90);
-      this.physics.velocityFromRotation(newRads, 400, this.ships[0].body.acceleration);
+      this.physics.velocityFromRotation(newRads, SECONDARY_ACCELERATION, this.ships[0].body.acceleration);
     } else if (this.keys.lateralRight.isDown) {
       const newRads = this.addDegreesToRads(this.ships[0].rotation, 90);
-      this.physics.velocityFromRotation(newRads, 400, this.ships[0].body.acceleration);
+      this.physics.velocityFromRotation(newRads, SECONDARY_ACCELERATION, this.ships[0].body.acceleration);
     }
 
     if (this.keys.spaceBrake.isDown) {
@@ -133,9 +138,9 @@ export default class MainGame {
 
     if (this.keys.p2Up.isDown) {
       this.emitter.startFollow(this.ships[1]);
-      this.physics.velocityFromRotation(this.ships[1].rotation, 600, this.ships[1].body.acceleration);
+      this.physics.velocityFromRotation(this.ships[1].rotation, PRIMARY_ACCELERATION, this.ships[1].body.acceleration);
     } else if (this.keys.p2Down.isDown) {
-      this.physics.velocityFromRotation(this.ships[1].rotation, -400, this.ships[1].body.acceleration);
+      this.physics.velocityFromRotation(this.ships[1].rotation, -SECONDARY_ACCELERATION, this.ships[1].body.acceleration);
     }
     else {
       this.emitter.stopFollow(this.ships[1]);
@@ -144,10 +149,10 @@ export default class MainGame {
 
     if (this.keys.p2LateralLeft.isDown) {
       const newRads = this.addDegreesToRads(this.ships[1].rotation, -90);
-      this.physics.velocityFromRotation(newRads, 400, this.ships[1].body.acceleration);
+      this.physics.velocityFromRotation(newRads, SECONDARY_ACCELERATION, this.ships[1].body.acceleration);
     } else if (this.keys.p2LateralRight.isDown) {
       const newRads = this.addDegreesToRads(this.ships[1].rotation, 90);
-      this.physics.velocityFromRotation(newRads, 400, this.ships[1].body.acceleration);
+      this.physics.velocityFromRotation(newRads, SECONDARY_ACCELERATION, this.ships[1].body.acceleration);
     }
 
     if (this.keys.p2SpaceBrake.isDown) {
@@ -179,10 +184,6 @@ export default class MainGame {
         }
       }
     }
-
-
-    // this.sky.tilePositionX += this.ships[0].body.deltaX();
-    // this.sky.tilePositionY += this.ships[0].body.deltaY();
   }
 
   addDegreesToRads(rads, degrees) {
@@ -209,7 +210,7 @@ export default class MainGame {
     if (this.ships.length < 2) {
       const newShip = this.physics.add.image(48, 48, `ship0${this.ships.length + 1}`).setDepth(2);
       newShip.setCollideWorldBounds(true);
-      newShip.setMaxVelocity(600);
+      newShip.setMaxVelocity(MAXIMUM_VELOCITY);
       this.ships.push(newShip);
 
       const particles = this.add.particles('red');
