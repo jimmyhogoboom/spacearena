@@ -1,4 +1,6 @@
 
+import Bullet from './Bullet.js';
+
 const BRAKE_VELOCITY_DELTA = 15;
 const KEY_GREATER_THAN = 190;
 const KEY_LESS_THAN = 188;
@@ -10,6 +12,7 @@ export default class MainGame {
   constructor() {
     // super('MainGame')
     this.ships = [];
+    this.lastFired = [0, 0];
   }
 
   preload() {
@@ -17,6 +20,7 @@ export default class MainGame {
     this.load.image('ship01', 'assets/green.png');
     this.load.image('ship02', 'assets/orange.png');
     this.load.image('sky', 'assets/nebula.jpg');
+    this.load.image('projectile', 'assets/projectile-red.png');
 
     // this.load.setBaseURL('http://labs.phaser.io');
     // TODO: bring these into assets directory
@@ -25,6 +29,11 @@ export default class MainGame {
 
   create() {
     this.sky = this.add.tileSprite(640, 360, 1280, 720, 'sky').setScrollFactor(0);
+    this.bullets = this.physics.add.group({
+      classType: Bullet,
+      maxSize: 30,
+      runChildUpdate: true
+    });
 
     this.initShip();
     this.initShip();
@@ -38,13 +47,15 @@ export default class MainGame {
         'lateralLeft': KEY_LESS_THAN,
         'lateralRight': KEY_GREATER_THAN,
         'spaceBrake': Phaser.Input.Keyboard.KeyCodes.M,
+        'fire': Phaser.Input.Keyboard.KeyCodes.L,
         'p2Up': Phaser.Input.Keyboard.KeyCodes.W,
         'p2Down': Phaser.Input.Keyboard.KeyCodes.S,
         'p2Left': Phaser.Input.Keyboard.KeyCodes.A,
         'p2Right': Phaser.Input.Keyboard.KeyCodes.D,
         'p2LateralLeft': Phaser.Input.Keyboard.KeyCodes.Q,
         'p2LateralRight': Phaser.Input.Keyboard.KeyCodes.E,
-        'p2SpaceBrake': Phaser.Input.Keyboard.KeyCodes.SPACE,
+        'p2SpaceBrake': Phaser.Input.Keyboard.KeyCodes.X,
+        'p2Fire': Phaser.Input.Keyboard.KeyCodes.SPACE,
       })
     }
 
@@ -63,7 +74,7 @@ export default class MainGame {
 
   }
 
-  update() {
+  update(time) {
     if (this.cursors.left.isDown) {
       this.ships[0].setAngularVelocity(-150);
     } else if (this.cursors.right.isDown) {
@@ -121,6 +132,16 @@ export default class MainGame {
         } else {
           this.ships[0].body.velocity.y += velocityDelta;
         }
+      }
+    }
+
+    if (this.keys.fire.isDown && time > this.lastFired[0]) {
+      var bullet = this.bullets.get();
+
+      if (bullet) {
+        bullet.fire(this.ships[0]);
+
+        this.lastFired[0] = time + 100;
       }
     }
 
@@ -182,6 +203,16 @@ export default class MainGame {
         } else {
           this.ships[1].body.velocity.y += velocityDelta;
         }
+      }
+    }
+
+    if (this.keys.p2Fire.isDown && time > this.lastFired[1]) {
+      var bullet = this.bullets.get();
+
+      if (bullet) {
+        bullet.fire(this.ships[1]);
+
+        this.lastFired[1] = time + 100;
       }
     }
   }
