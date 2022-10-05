@@ -105,13 +105,11 @@ export default class MainGame {
     // TODO: combine inputs. Currently, whichever key is handled last is the only input considered.
 
     if (this.keys.up.isDown) {
-      this.emitter.startFollow(this.ships[0]);
       this.physics.velocityFromRotation(this.ships[0].rotation, PRIMARY_ACCELERATION, this.ships[0].body.acceleration);
     } else if (this.keys.down.isDown) {
       this.physics.velocityFromRotation(this.ships[0].rotation, -SECONDARY_ACCELERATION, this.ships[0].body.acceleration);
     }
     else {
-      this.emitter.stopFollow(this.ships[0]);
       this.ships[0].setAcceleration(0);
     }
 
@@ -176,13 +174,11 @@ export default class MainGame {
     // TODO: combine inputs. Currently, whichever key is handled last is the only input considered.
 
     if (this.keys.p2Up.isDown) {
-      this.emitter.startFollow(this.ships[1]);
       this.physics.velocityFromRotation(this.ships[1].rotation, PRIMARY_ACCELERATION, this.ships[1].body.acceleration);
     } else if (this.keys.p2Down.isDown) {
       this.physics.velocityFromRotation(this.ships[1].rotation, -SECONDARY_ACCELERATION, this.ships[1].body.acceleration);
     }
     else {
-      this.emitter.stopFollow(this.ships[1]);
       this.ships[1].setAcceleration(0);
     }
 
@@ -263,13 +259,6 @@ export default class MainGame {
       newShip.setCollideWorldBounds(true);
       newShip.setMaxVelocity(MAXIMUM_VELOCITY);
       this.ships.push(newShip);
-
-      const particles = this.add.particles('red');
-      this.emitter = particles.createEmitter({
-        speed: 10,
-        scale: { start: 1, end: 0 },
-        blendMode: 'ADD'
-      });
     }
   }
 }
