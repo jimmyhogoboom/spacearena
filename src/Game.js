@@ -57,9 +57,6 @@ export default class MainGame {
     this.initShip();
     this.initShip();
 
-    this.physics.add.collider(this.ships[0], this.bullets, this.hit, null, this);
-    this.physics.add.collider(this.ships[1], this.bullets, this.hit, null, this);
-
     if (!this.keys) {
       this.keys = this.input.keyboard.addKeys({
         'left': 37,
@@ -258,6 +255,7 @@ export default class MainGame {
       newShip.data = { health: 100 };
       newShip.setCollideWorldBounds(true);
       newShip.setMaxVelocity(MAXIMUM_VELOCITY);
+      this.physics.add.collider(newShip, this.bullets, this.hit, null, this);
       this.ships.push(newShip);
     }
   }
