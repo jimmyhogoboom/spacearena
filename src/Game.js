@@ -12,7 +12,7 @@ export default class MainGame {
     this.load.image('sky', 'assets/skies/space3.png');
     this.load.image('logo', 'assets/sprites/phaser3-logo.png');
     this.load.image('red', 'assets/particles/red.png');
-    this.sky = this.add.tileSprite(1280, 720, 800, 600, 'sky');
+    this.sky = this.add.tileSprite(640, 360, 1280, 720, 'sky').setScrollFactor(0);
   }
 
   create() {
@@ -40,11 +40,9 @@ export default class MainGame {
       right: this.cursors.right,
       up: this.cursors.up,
       down: this.cursors.down,
-      zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-      zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
       acceleration: 0.06,
       drag: 0.0005,
-      maxSpeed: 1.0
+      maxSpeed: 0.0005,
     };
 
     new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
@@ -60,12 +58,17 @@ export default class MainGame {
       this.ship.setAngularVelocity(0);
     }
 
+    // TODO: only play emitter when thrust is active
+    // TODO: combine inputs. Currently, whichever key is handled last is the only input considered.
+
     if (this.cursors.up.isDown) {
+      this.emitter.startFollow(this.ship);
       this.physics.velocityFromRotation(this.ship.rotation, 600, this.ship.body.acceleration);
     } else if (this.cursors.down.isDown) {
       this.physics.velocityFromRotation(this.ship.rotation, -400, this.ship.body.acceleration);
     }
     else {
+      this.emitter.stopFollow(this.ship);
       this.ship.setAcceleration(0);
     }
 
@@ -105,8 +108,6 @@ export default class MainGame {
           this.ship.body.velocity.y += velocityDelta;
         }
       }
-
-      console.log({ x, y, ship: this.ship.body.velocity })
     }
 
     this.sky.tilePositionX += this.ship.body.deltaX();
@@ -135,15 +136,15 @@ export default class MainGame {
 
   initShip() {
     if (!this.ship) {
-      this.ship = this.physics.add.image(400, 100, 'logo');
+      this.ship = this.physics.add.image(400, 100, 'logo').setDepth(2);
       this.ship.setCollideWorldBounds(false);
+      this.ship.setMaxVelocity(600);
       const particles = this.add.particles('red');
-      const emitter = particles.createEmitter({
+      this.emitter = particles.createEmitter({
         speed: 10,
         scale: { start: 1, end: 0 },
         blendMode: 'ADD'
       });
-      emitter.startFollow(this.ship);
     }
   }
 }
