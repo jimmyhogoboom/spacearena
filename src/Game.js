@@ -1,5 +1,8 @@
 
 const BRAKE_VELOCITY_DELTA = 15;
+const KEY_GREATER_THAN = 190;
+const KEY_LESS_THAN = 188;
+const MAXIMUM_VELOCITY = 600;
 
 export default class MainGame {
   constructor() {
@@ -29,8 +32,8 @@ export default class MainGame {
 
     if (!this.keys) {
       this.keys = this.input.keyboard.addKeys({
-        'lateralLeft': 188,
-        'lateralRight': 190,
+        'lateralLeft': KEY_LESS_THAN,
+        'lateralRight': KEY_GREATER_THAN,
         'spaceBrake': Phaser.Input.Keyboard.KeyCodes.M,
         'p2Up': Phaser.Input.Keyboard.KeyCodes.W,
         'p2Down': Phaser.Input.Keyboard.KeyCodes.S,
@@ -208,7 +211,7 @@ export default class MainGame {
     if (this.ships.length < 2) {
       const newShip = this.physics.add.image(400, 100, 'logo').setDepth(2);
       newShip.setCollideWorldBounds(false);
-      newShip.setMaxVelocity(600);
+      newShip.setMaxVelocity(MAXIMUM_VELOCITY);
       newShip.body.setCollideWorldBounds(true);
       this.ships.push(newShip);
 
