@@ -8,10 +8,12 @@ export default class MainGame {
   }
 
   preload() {
-    this.load.image('ship01', 'assets/green_05.png');
-    this.load.image('ship02', 'assets/orange_01.png');
+    this.load.setBaseURL('');
+    this.load.image('ship01', 'assets/green.png');
+    this.load.image('ship02', 'assets/orange.png');
 
-    this.load.setBaseURL('http://labs.phaser.io');
+    // this.load.setBaseURL('http://labs.phaser.io');
+    // TODO: bring these into assets directory
     this.load.image('sky', 'assets/skies/space3.png');
     this.load.image('red', 'assets/particles/red.png');
     this.sky = this.add.tileSprite(640, 360, 1280, 720, 'sky').setScrollFactor(0);
@@ -180,8 +182,8 @@ export default class MainGame {
     }
 
 
-    this.sky.tilePositionX += this.ships[0].body.deltaX();
-    this.sky.tilePositionY += this.ships[0].body.deltaY();
+    // this.sky.tilePositionX += this.ships[0].body.deltaX();
+    // this.sky.tilePositionY += this.ships[0].body.deltaY();
   }
 
   addDegreesToRads(rads, degrees) {
@@ -206,10 +208,9 @@ export default class MainGame {
 
   initShip() {
     if (this.ships.length < 2) {
-      const newShip = this.physics.add.image(400, 100, 'logo').setDepth(2);
-      newShip.setCollideWorldBounds(false);
+      const newShip = this.physics.add.image(48, 48, `ship0${this.ships.length + 1}`).setDepth(2);
+      newShip.setCollideWorldBounds(true);
       newShip.setMaxVelocity(600);
-      newShip.body.setCollideWorldBounds(true);
       this.ships.push(newShip);
 
       const particles = this.add.particles('red');
