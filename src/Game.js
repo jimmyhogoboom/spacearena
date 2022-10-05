@@ -11,16 +11,15 @@ export default class MainGame {
     this.load.setBaseURL('');
     this.load.image('ship01', 'assets/green.png');
     this.load.image('ship02', 'assets/orange.png');
+    this.load.image('sky', 'assets/nebula.jpg');
 
     // this.load.setBaseURL('http://labs.phaser.io');
     // TODO: bring these into assets directory
-    this.load.image('sky', 'assets/skies/space3.png');
     this.load.image('red', 'assets/particles/red.png');
-    this.sky = this.add.tileSprite(640, 360, 1280, 720, 'sky').setScrollFactor(0);
   }
 
   create() {
-    this.add.image(400, 300, 'sky');
+    this.sky = this.add.tileSprite(640, 360, 1280, 720, 'sky').setScrollFactor(0);
 
     this.initShip();
     this.initShip();
