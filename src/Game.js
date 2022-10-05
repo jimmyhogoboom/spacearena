@@ -8,10 +8,10 @@ const MAXIMUM_VELOCITY = 600;
 const PRIMARY_ACCELERATION = 600;
 const SECONDARY_ACCELERATION = 300;
 const BULLET_DAMAGE = 10;
+const FIRE_DELAY = 200;
 
 export default class MainGame {
   constructor() {
-    // super('MainGame')
     this.ships = [];
     this.lastFired = [0, 0];
   }
@@ -51,6 +51,7 @@ export default class MainGame {
       hideOnComplete: true,
     });
     this.explosion = this.add.sprite(506, 46, 'explosion');
+    this.explosion.setPosition(-100, -100);
 
     this.initShip();
     this.initShip();
@@ -58,12 +59,12 @@ export default class MainGame {
     this.physics.add.collider(this.ships[0], this.bullets, this.hit, null, this);
     this.physics.add.collider(this.ships[1], this.bullets, this.hit, null, this);
 
-    if (!this.cursors) {
-      this.cursors = this.input.keyboard.createCursorKeys()
-    }
-
     if (!this.keys) {
       this.keys = this.input.keyboard.addKeys({
+        'left': 37,
+        'up': 38,
+        'right': 39,
+        'down': 40,
         'lateralLeft': KEY_LESS_THAN,
         'lateralRight': KEY_GREATER_THAN,
         'spaceBrake': Phaser.Input.Keyboard.KeyCodes.M,
@@ -78,20 +79,6 @@ export default class MainGame {
         'p2Fire': Phaser.Input.Keyboard.KeyCodes.SPACE,
       })
     }
-
-    const controlConfig = {
-      camera: this.cameras.main,
-      left: this.cursors.left,
-      right: this.cursors.right,
-      up: this.cursors.up,
-      down: this.cursors.down,
-      acceleration: 0.06,
-      drag: 0.0005,
-      maxSpeed: 0.0005,
-    };
-
-    new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
-
   }
 
   update(time) {
@@ -105,9 +92,9 @@ export default class MainGame {
       }
     });
 
-    if (this.cursors.left.isDown) {
+    if (this.keys.left.isDown) {
       this.ships[0].setAngularVelocity(-150);
-    } else if (this.cursors.right.isDown) {
+    } else if (this.keys.right.isDown) {
       this.ships[0].setAngularVelocity(150);
     } else {
       this.ships[0].setAngularVelocity(0);
@@ -116,10 +103,10 @@ export default class MainGame {
     // TODO: only play emitter when thrust is active
     // TODO: combine inputs. Currently, whichever key is handled last is the only input considered.
 
-    if (this.cursors.up.isDown) {
+    if (this.keys.up.isDown) {
       this.emitter.startFollow(this.ships[0]);
       this.physics.velocityFromRotation(this.ships[0].rotation, PRIMARY_ACCELERATION, this.ships[0].body.acceleration);
-    } else if (this.cursors.down.isDown) {
+    } else if (this.keys.down.isDown) {
       this.physics.velocityFromRotation(this.ships[0].rotation, -SECONDARY_ACCELERATION, this.ships[0].body.acceleration);
     }
     else {
@@ -171,7 +158,7 @@ export default class MainGame {
       if (bullet) {
         bullet.fire(this.ships[0]);
 
-        this.lastFired[0] = time + 200;
+        this.lastFired[0] = time + FIRE_DELAY;
       }
     }
 
@@ -242,7 +229,7 @@ export default class MainGame {
       if (bullet) {
         bullet.fire(this.ships[1]);
 
-        this.lastFired[1] = time + 100;
+        this.lastFired[1] = time + FIRE_DELAY;
       }
     }
   }
