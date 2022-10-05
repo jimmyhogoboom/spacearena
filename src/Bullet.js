@@ -11,7 +11,7 @@ const Bullet = new Phaser.Class({
       this.setBlendMode(1);
       this.setDepth(1);
 
-      this.speed = 800;
+      this.speed = 500;
       this.lifespan = 1000;
 
       this._temp = new Phaser.Math.Vector2();
@@ -55,10 +55,15 @@ const Bullet = new Phaser.Class({
     this.lifespan -= delta;
 
     if (this.lifespan <= 0) {
-      this.setActive(false);
-      this.setVisible(false);
-      this.body.stop();
+      this.stop();
     }
+  },
+
+  stop: function() {
+    this.setPosition(-100, -100);
+    this.body.stop();
+    this.setActive(false);
+    this.setVisible(false);
   }
 
 });

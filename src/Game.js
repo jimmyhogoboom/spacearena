@@ -7,6 +7,7 @@ const KEY_LESS_THAN = 188;
 const MAXIMUM_VELOCITY = 600;
 const PRIMARY_ACCELERATION = 600;
 const SECONDARY_ACCELERATION = 400;
+const BULLET_DAMAGE = 10;
 
 export default class MainGame {
   constructor() {
@@ -27,6 +28,11 @@ export default class MainGame {
     this.load.image('red', 'assets/particles/red.png');
   }
 
+  hit(ship, bullet, ...args) {
+    ship.data.health -= BULLET_DAMAGE;
+    bullet.lifespan = 0;
+  }
+
   create() {
     this.sky = this.add.tileSprite(640, 360, 1280, 720, 'sky').setScrollFactor(0);
     this.bullets = this.physics.add.group({
@@ -37,6 +43,9 @@ export default class MainGame {
 
     this.initShip();
     this.initShip();
+
+    this.physics.add.collider(this.ships[0], this.bullets, this.hit, null, this);
+    this.physics.add.collider(this.ships[1], this.bullets, this.hit, null, this);
 
     if (!this.cursors) {
       this.cursors = this.input.keyboard.createCursorKeys()
@@ -75,6 +84,13 @@ export default class MainGame {
   }
 
   update(time) {
+    this.ships.forEach(ship => {
+      if (ship.data.health < 1) {
+        ship.setActive(false);
+        ship.setVisible(false);
+      }
+    });
+
     if (this.cursors.left.isDown) {
       this.ships[0].setAngularVelocity(-150);
     } else if (this.cursors.right.isDown) {
@@ -141,7 +157,7 @@ export default class MainGame {
       if (bullet) {
         bullet.fire(this.ships[0]);
 
-        this.lastFired[0] = time + 100;
+        this.lastFired[0] = time + 200;
       }
     }
 
@@ -233,6 +249,7 @@ export default class MainGame {
     return rads * 180 / Math.PI;
   }
 
+  // TODO: use Phaser.Math.DegToRad instead
   degreesToRads(degrees) {
     return (degrees * Math.PI) / 180;
   }
@@ -240,6 +257,7 @@ export default class MainGame {
   initShip() {
     if (this.ships.length < 2) {
       const newShip = this.physics.add.image(48, 48, `ship0${this.ships.length + 1}`).setDepth(2);
+      newShip.data = { health: 100 };
       newShip.setCollideWorldBounds(true);
       newShip.setMaxVelocity(MAXIMUM_VELOCITY);
       this.ships.push(newShip);
