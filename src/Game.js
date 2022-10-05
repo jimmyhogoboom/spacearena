@@ -39,7 +39,10 @@ export default class MainGame {
   }
 
   create() {
-    this.sky = this.add.tileSprite(640, 360, 1280, 720, 'sky').setScrollFactor(0);
+    var container = this.add.container(window.innerWidth, window.innerHeight);
+    const ts = this.add.tileSprite(-(window.innerWidth / 2), -(window.innerHeight / 2), window.innerWidth, window.innerHeight, 'sky');
+    container.add(ts);
+
     this.bullets = this.physics.add.group({
       classType: Bullet,
       maxSize: 30,
