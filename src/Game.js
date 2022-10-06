@@ -21,7 +21,8 @@ export default class MainGame {
     this.load.setBaseURL('');
 
     this.load.audio('exlosion_sound', 'assets/Retro_8-Bit_Game-Bomb_Explosion_09.wav')
-    this.load.audio('weapon_sound', 'assets/Retro_8-Bit_Game-Gun_Laser_Weapon_Shoot_Beam_09.wav')
+    this.load.audio('weapon1_sound', 'assets/Retro_8-Bit_Game-Gun_Laser_Weapon_Shoot_Beam_03.wav')
+    this.load.audio('weapon2_sound', 'assets/Retro_8-Bit_Game-Gun_Laser_Weapon_Shoot_Beam_09.wav')
     this.load.image('ship01', 'assets/green.png');
     this.load.image('ship02', 'assets/orange.png');
     this.load.image('sky', 'assets/nebula.jpg');
@@ -34,8 +35,6 @@ export default class MainGame {
     // this.load.setBaseURL('http://labs.phaser.io');
     // TODO: bring these into assets directory
     this.load.image('red', 'assets/particles/red.png');
-
-    this.sound.add('exlosion_sound');
   }
 
   hit(ship, bullet, ...args) {
@@ -62,6 +61,10 @@ export default class MainGame {
     this.explosion = this.add.sprite(506, 46, 'explosion');
     this.explosion.setPosition(-100, -100);
 
+    this.sound.add('exlosion_sound');
+    this.sound.add('weapon1_sound');
+    this.sound.add('weapon2_sound');
+
     this.initShip(window.innerWidth * .8, window.innerHeight / 2);
     this.initShip(window.innerWidth * .2, window.innerHeight / 2, 180);
 
@@ -73,8 +76,8 @@ export default class MainGame {
         'down': 40,
         'lateralLeft': KEY_LESS_THAN,
         'lateralRight': KEY_GREATER_THAN,
-        'spaceBrake': Phaser.Input.Keyboard.KeyCodes.M,
-        'fire': Phaser.Input.Keyboard.KeyCodes.L,
+        'spaceBrake': Phaser.Input.Keyboard.KeyCodes.CTRL,
+        'fire': Phaser.Input.Keyboard.KeyCodes.SHIFT,
         'p2Up': Phaser.Input.Keyboard.KeyCodes.W,
         'p2Down': Phaser.Input.Keyboard.KeyCodes.S,
         'p2Left': Phaser.Input.Keyboard.KeyCodes.A,
@@ -163,7 +166,7 @@ export default class MainGame {
 
       if (bullet) {
         bullet.fire(this.ships[0]);
-
+        this.sound.play('weapon1_sound');
         this.lastFired[0] = time + FIRE_DELAY;
       }
     }
@@ -232,7 +235,7 @@ export default class MainGame {
 
       if (bullet) {
         bullet.fire(this.ships[1]);
-
+        this.sound.play('weapon2_sound');
         this.lastFired[1] = time + FIRE_DELAY;
       }
     }
