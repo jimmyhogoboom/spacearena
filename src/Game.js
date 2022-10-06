@@ -70,13 +70,13 @@ export default class MainGame {
 
     if (!this.keys) {
       this.keys = this.input.keyboard.addKeys({
-        'left': 37,
-        'up': 38,
-        'right': 39,
-        'down': 40,
-        'lateralLeft': KEY_LESS_THAN,
-        'lateralRight': KEY_GREATER_THAN,
-        'spaceBrake': Phaser.Input.Keyboard.KeyCodes.CTRL,
+        'left': Phaser.Input.Keyboard.KeyCodes.LEFT,
+        'up': Phaser.Input.Keyboard.KeyCodes.UP,
+        'right': Phaser.Input.Keyboard.KeyCodes.RIGHT,
+        'down': Phaser.Input.Keyboard.KeyCodes.DOWN,
+        'lateralLeft': Phaser.Input.Keyboard.KeyCodes.COMMA,
+        'lateralRight': Phaser.Input.Keyboard.KeyCodes.PERIOD,
+        'spaceBrake': Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH,
         'fire': Phaser.Input.Keyboard.KeyCodes.SHIFT,
         'p2Up': Phaser.Input.Keyboard.KeyCodes.W,
         'p2Down': Phaser.Input.Keyboard.KeyCodes.S,
