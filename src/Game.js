@@ -28,6 +28,8 @@ export default class MainGame {
       'assets/explosion_46x46.png',
       { frameWidth: 46, frameHeight: 46 });
 
+    this.load.audio('exlosion_sound', 'assets/Retro_8-Bit_Game-Bomb_Explosion_09.wav')
+
     // this.load.setBaseURL('http://labs.phaser.io');
     // TODO: bring these into assets directory
     this.load.image('red', 'assets/particles/red.png');
@@ -84,12 +86,17 @@ export default class MainGame {
 
   update(time) {
     this.ships.forEach(ship => {
-      if (ship.data.health < 1) {
+      if (!ship.data.destroyed && ship.data.health < 1) {
+        ship.data.destroyed = true;
         ship.setActive(false);
         ship.setVisible(false);
         this.explosion.setScale(2);
         this.explosion.setPosition(ship.x, ship.y);
         this.explosion.play('explode', true);
+        
+        // TODO clean up sound play logic
+        var exlosion_sound = this.sound.add('exlosion_sound');
+        exlosion_sound.play();
       }
     });
 
