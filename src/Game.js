@@ -161,7 +161,7 @@ export default class MainGame {
       }
     }
 
-    if (this.keys.fire.isDown && time > this.lastFired[0]) {
+    if (this.keys.fire.isDown && time > this.lastFired[0] && !this.ships[0].data.destroyed) {
       var bullet = this.bullets.get();
 
       if (bullet) {
@@ -230,7 +230,7 @@ export default class MainGame {
       }
     }
 
-    if (this.keys.p2Fire.isDown && time > this.lastFired[1]) {
+    if (this.keys.p2Fire.isDown && time > this.lastFired[1] && !this.ships[1].data.destroyed) {
       var bullet = this.bullets.get();
 
       if (bullet) {
