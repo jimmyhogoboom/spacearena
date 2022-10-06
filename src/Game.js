@@ -19,6 +19,9 @@ export default class MainGame {
 
   preload() {
     this.load.setBaseURL('');
+
+    this.load.audio('exlosion_sound', 'assets/Retro_8-Bit_Game-Bomb_Explosion_09.wav')
+    this.load.audio('weapon_sound', 'assets/Retro_8-Bit_Game-Gun_Laser_Weapon_Shoot_Beam_09.wav')
     this.load.image('ship01', 'assets/green.png');
     this.load.image('ship02', 'assets/orange.png');
     this.load.image('sky', 'assets/nebula.jpg');
@@ -28,11 +31,11 @@ export default class MainGame {
       'assets/explosion_46x46.png',
       { frameWidth: 46, frameHeight: 46 });
 
-    this.load.audio('exlosion_sound', 'assets/Retro_8-Bit_Game-Bomb_Explosion_09.wav')
-
     // this.load.setBaseURL('http://labs.phaser.io');
     // TODO: bring these into assets directory
     this.load.image('red', 'assets/particles/red.png');
+
+    this.sound.add('exlosion_sound');
   }
 
   hit(ship, bullet, ...args) {
@@ -93,10 +96,7 @@ export default class MainGame {
         this.explosion.setScale(2);
         this.explosion.setPosition(ship.x, ship.y);
         this.explosion.play('explode', true);
-        
-        // TODO clean up sound play logic
-        var exlosion_sound = this.sound.add('exlosion_sound');
-        exlosion_sound.play();
+        this.sound.play('exlosion_sound');
       }
     });
 
