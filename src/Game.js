@@ -1,15 +1,13 @@
 
 import Bullet from './Bullet.js';
 
+const ANGULAR_VELOCITY = 200;
 const BRAKE_VELOCITY_DELTA = 15;
-const KEY_GREATER_THAN = 190;
-const KEY_LESS_THAN = 188;
+const BULLET_DAMAGE = 10;
+const FIRE_DELAY = 200;
 const MAXIMUM_VELOCITY = 600;
 const PRIMARY_ACCELERATION = 600;
 const SECONDARY_ACCELERATION = 300;
-const ANGULAR_VELOCITY = 200;
-const BULLET_DAMAGE = 10;
-const FIRE_DELAY = 200;
 
 export default class MainGame {
   constructor() {
